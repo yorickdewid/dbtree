@@ -1,0 +1,7 @@
+== TODO ==
+ * cache			(feature)
+ * primary key			(feature)
+ * indices			(feature)
+ * datatypes			(fix)
+ * Option flags
+ * Column NULL			(feature)
