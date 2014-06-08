@@ -1,6 +1,6 @@
 CFLAGS = -Wall -g -DDEBUG -DVLAUNCH
-PROGRAM = dbtree
-PROGRAM32 = dbtree32
+PROGRAM = dbtree.out
+PROGRAM32 = dbtree32.out
 
 all: compile
 compile:
