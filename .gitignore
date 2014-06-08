@@ -8,6 +8,7 @@
 # Databases
 *.vdb
 *.tdb
+*.tmp
 
 # Libraries
 *.a
