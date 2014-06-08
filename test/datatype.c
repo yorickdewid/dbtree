@@ -6,35 +6,50 @@
 
 // current known datatypes
 dset_t type_mtx[] = {
-	{DT_INT,	4, "%d"},
-	{DT_CHAR,	1, "%c"},
-	{DT_STRING,	1, "%s"},
-	{DT_BOOL,	1, "%d"},
-	{DT_FLOAT,	4, "%f"},
-	{DT_DOUBLE,	8, "%f"},
+	{DT_INT,	4, FALSE,	"INT"},
+	{DT_CHAR,	1, FALSE,	"CHAR"},
+	{DT_STRING,	1, TRUE,	"STRING"},
+	{DT_BOOL,	1, FALSE,	"BOOL"},
+	{DT_FLOAT,	4, FALSE,	"FLOAT"},
+	{DT_DOUBLE,	8, FALSE,	"DOUBLE"},
 };
 
-// retrieve type settings
+// retrieve type settings by name
 dset_t get_dopt_type(const char *type){
 	if(!strcmp(type, "INT")){
-		assert(sizeof(int)==type_mtx[0].size);
 		return type_mtx[0];
 	}else if(!strcmp(type, "CHAR")){
-		assert(sizeof(char)==type_mtx[1].size);
 		return type_mtx[1];
 	}else if(!strcmp(type, "STRING")){
-		assert(sizeof(char)==1);
 		return type_mtx[2];
 	}else if(!strcmp(type, "BOOL")){
-		assert(sizeof(bool)==type_mtx[3].size);
 		return type_mtx[3];
 	}else if(!strcmp(type, "FLOAT")){
-		assert(sizeof(float)==type_mtx[4].size);
 		return type_mtx[4];
 	}else if(!strcmp(type, "DOUBLE")){
-		assert(sizeof(double)==type_mtx[5].size);
 		return type_mtx[5];
 	}else{
+		printf("Unknown type cast as string\n");
+		return type_mtx[2];
+	}
+}
+
+// retrieve type settings by type
+dset_t get_dopt(TYPE type){
+	if(type_mtx[0].type == type){
+		return type_mtx[0];
+	}else if(type_mtx[1].type == type){
+		return type_mtx[1];
+	}else if(type_mtx[2].type == type){
+		return type_mtx[2];
+	}else if(type_mtx[3].type == type){
+		return type_mtx[3];
+	}else if(type_mtx[4].type == type){
+		return type_mtx[4];
+	}else if(type_mtx[5].type == type){
+		return type_mtx[5];
+	}else{
+		printf("Unknown type cast as string\n");
 		return type_mtx[2];
 	}
 }
@@ -51,7 +66,9 @@ static datatype_t dread(FILE *stream){
 	fread(&rtn.type, sizeof(rtn.type), 1, stream);
 	fread(&rtn.size, sizeof(rtn.size), 1, stream);
 
-	if(rtn.type == DT_STRING){
+	dset_t type_settings = get_dopt(rtn.type);
+
+	if(type_settings.varlen){
 		rtn.pval = calloc(1, rtn.size+1);
 	}else{
 		rtn.pval = malloc(rtn.size);
@@ -67,7 +84,7 @@ void write_data(const char *fname, const char *dtype, void *ptr){
 	dset_t type_settings = get_dopt_type(dtype);
 	FILE *fpout = fopen(fname, "w+b");
 
-	if(type_settings.type == DT_STRING){
+	if(type_settings.varlen){
 		size = strlen(ptr);
 	}else{
 		size = type_settings.size;
@@ -81,7 +98,6 @@ void write_data(const char *fname, const char *dtype, void *ptr){
 void read_data(const char *fname){
 	FILE *fpin = fopen(fname, "r+b");
 	datatype_t o = dread(fpin);
-	printf("Data %p\n", o.pval);
 
 	if(o.type == DT_INT){
 		printf("Data cast<int> %d\n", ref_to_int(o.pval));
@@ -103,11 +119,20 @@ void read_data(const char *fname){
 	fclose(fpin);
 }
 
+void check_datatype(){
+	assert(sizeof(int) == type_mtx[0].size);
+	assert(sizeof(char) == type_mtx[1].size);
+	assert(sizeof(bool) == type_mtx[3].size);
+	assert(sizeof(float) == type_mtx[4].size);
+	assert(sizeof(double) == type_mtx[5].size);
+}
+
 int main(int argc, char *argv[]){
 	char fname[BUFSIZ];
-	char data[BUFSIZ];
+//	char data[BUFSIZ];
 	char dtype[DT_SIZ];
 
+	check_datatype();
 /*
 	// Store datatype
 	printf("Datatype: ");
@@ -125,11 +150,11 @@ int main(int argc, char *argv[]){
 	fname[strlen(fname)-1] = '\0';
 	strcat(fname, ".tmp");
 
-	char i[] = "teststring";
-	strcpy(dtype, "STRING");
-	write_data(fname, dtype, i);
+	char i = 'Z';
+	strcpy(dtype, "CHAR");
+
+	write_data(fname, dtype, &i);
 	read_data(fname);
 
 	return 0;
 }
-

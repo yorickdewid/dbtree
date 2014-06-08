@@ -24,7 +24,8 @@ typedef char TYPE;
 typedef struct {
 	TYPE type;
 	unsigned int size;
-	char print[4];
+	bool varlen;
+	char name[8];
 } dset_t;
 
 // datatype structure
