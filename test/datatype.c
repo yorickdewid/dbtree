@@ -60,22 +60,20 @@ static void dwrite(const void *ptr, unsigned int size, TYPE type, FILE *stream){
 	fwrite(ptr, size, 1, stream);
 }
 
-static datatype_t dread(FILE *stream){
-	datatype_t rtn;
+static dset_t dread(FILE *stream, datatype_t *rtn){
+	fread(&rtn->type, sizeof(rtn->type), 1, stream);
+	fread(&rtn->size, sizeof(rtn->size), 1, stream);
 
-	fread(&rtn.type, sizeof(rtn.type), 1, stream);
-	fread(&rtn.size, sizeof(rtn.size), 1, stream);
-
-	dset_t type_settings = get_dopt(rtn.type);
+	dset_t type_settings = get_dopt(rtn->type);
 
 	if(type_settings.varlen){
-		rtn.pval = calloc(1, rtn.size+1);
+		rtn->pval = calloc(1, rtn->size+1);
 	}else{
-		rtn.pval = malloc(rtn.size);
+		rtn->pval = malloc(rtn->size);
 	}
-	fread(rtn.pval, rtn.size, 1, stream);
+	fread(rtn->pval, rtn->size, 1, stream);
 
-	return rtn;
+	return type_settings;
 }
 
 void write_data(const char *fname, const char *dtype, void *ptr){
@@ -97,25 +95,26 @@ void write_data(const char *fname, const char *dtype, void *ptr){
 
 void read_data(const char *fname){
 	FILE *fpin = fopen(fname, "r+b");
-	datatype_t o = dread(fpin);
+	datatype_t rtn;
+	dset_t o = dread(fpin, &rtn);
 
 	if(o.type == DT_INT){
-		printf("Data cast<int> %d\n", ref_to_int(o.pval));
+		printf("Data cast<%s> %d\n", o.name, ref_to_int(rtn.pval));
 	}else if(o.type == DT_CHAR){
-		printf("Data cast<char> %c\n", ref_to_char(o.pval));
+		printf("Data cast<%s> %c\n", o.name, ref_to_char(rtn.pval));
 	}else if(o.type == DT_STRING){
-		printf("Data cast<string> %s\n", ref_to_string(o.pval));
+		printf("Data cast<%s> %s\n", o.name, ref_to_string(rtn.pval));
 	}else if(o.type == DT_BOOL){
-		printf("Data cast<bool> %d\n", ref_to_bool(o.pval));
+		printf("Data cast<%s> %d\n", o.name, ref_to_bool(rtn.pval));
 	}else if(o.type == DT_FLOAT){
-		printf("Data cast<float> %f\n", ref_to_float(o.pval));
+		printf("Data cast<%s> %f\n", o.name, ref_to_float(rtn.pval));
 	}else if(o.type == DT_DOUBLE){
-		printf("Data cast<double> %f\n", ref_to_double(o.pval));
+		printf("Data cast<%s> %f\n", o.name, ref_to_double(rtn.pval));
 	}else{
-		printf("Data cast<unkown> %s\n", ref_to_string(o.pval));
+		printf("Data cast<unkown> %s\n", ref_to_string(rtn.pval));
 	}
 
-	free(o.pval);
+	free(rtn.pval);
 	fclose(fpin);
 }
 
@@ -150,10 +149,10 @@ int main(int argc, char *argv[]){
 	fname[strlen(fname)-1] = '\0';
 	strcat(fname, ".tmp");
 
-	char i = 'Z';
-	strcpy(dtype, "CHAR");
+	char i[] = "testvar3@#!";
+	strcpy(dtype, "STRING");
 
-	write_data(fname, dtype, &i);
+	write_data(fname, dtype, i);
 	read_data(fname);
 
 	return 0;
