@@ -78,18 +78,36 @@ static dset_t dread(FILE *stream, datatype_t *rtn){
 
 void write_data(const char *fname, const char *dtype, void *ptr){
 	unsigned int size;
+	void *cptr;
 
 	dset_t type_settings = get_dopt_type(dtype);
 	FILE *fpout = fopen(fname, "w+b");
 
 	if(type_settings.varlen){
 		size = strlen(ptr);
+		cptr = ptr;
 	}else{
+		if(type_settings.type == DT_INT){
+			int tmp = str_to_int((char *)ptr);
+			cptr = &tmp;
+		}else if(type_settings.type == DT_CHAR){
+			char tmp = str_to_char((char *)ptr);
+			cptr = &tmp;
+		}else if(type_settings.type == DT_BOOL){
+			bool tmp = str_to_bool((char *)ptr);
+			cptr = &tmp;
+		}else if(type_settings.type == DT_FLOAT){
+			float tmp = str_to_float((char *)ptr);
+			cptr = &tmp;
+		}else if(type_settings.type == DT_DOUBLE){
+			double tmp = str_to_double((char *)ptr);
+			cptr = &tmp;
+		}
 		size = type_settings.size;
 	}
 	printf("write size %d\n", size);
 
-	dwrite(ptr, size, type_settings.type, fpout);
+	dwrite(cptr, size, type_settings.type, fpout);
 	fclose(fpout);
 }
 
@@ -128,11 +146,11 @@ void check_datatype(){
 
 int main(int argc, char *argv[]){
 	char fname[BUFSIZ];
-//	char data[BUFSIZ];
+	char data[BUFSIZ];
 	char dtype[DT_SIZ];
 
 	check_datatype();
-/*
+
 	// Store datatype
 	printf("Datatype: ");
 	fgets(dtype, DT_SIZ, stdin);
@@ -142,17 +160,17 @@ int main(int argc, char *argv[]){
 	printf("Data: ");
 	fgets(data, BUFSIZ, stdin);
 	data[strlen(data)-1] = '\0';
-*/
+
 	// database filename
 	printf("Filename: ");
 	fgets(fname, BUFSIZ, stdin);
 	fname[strlen(fname)-1] = '\0';
 	strcat(fname, ".tmp");
 
-	char i[] = "testvar3@#!";
-	strcpy(dtype, "STRING");
+//	char i[] = "testvar3@#!";
+//	strcpy(dtype, "STRING");
 
-	write_data(fname, dtype, i);
+	write_data(fname, dtype, (void *)data);
 	read_data(fname);
 
 	return 0;

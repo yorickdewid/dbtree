@@ -35,15 +35,17 @@ typedef struct {
 	void *pval;
 } datatype_t;
 
-int ref_to_int(const void *ptr);
-char ref_to_char(const void *ptr);
-char *ref_to_string(const void *ptr);
-bool ref_to_bool(const void *ptr);
-float ref_to_float(const void *ptr);
-double ref_to_double(const void *ptr);
+int ref_to_int(const void *);
+char ref_to_char(const void *);
+char *ref_to_string(const void *);
+bool ref_to_bool(const void *);
+float ref_to_float(const void *);
+double ref_to_double(const void *);
 
-int str_to_int(const char *str);
-double str_to_double(const char *str);
-float str_to_float(const char *str);
+int str_to_int(const char *);
+double str_to_double(const char *);
+float str_to_float(const char *);
+bool str_to_bool(const char *);
+char str_to_char(const char *);
 
 #endif
