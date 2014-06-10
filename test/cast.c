@@ -40,3 +40,14 @@ double str_to_double(const char *str){
 float str_to_float(const char *str){
 	return (float)str_to_double(str);
 }
+
+bool str_to_bool(const char *str){
+	if(!strcmp(str, "Y")||!strcmp(str, "1")||!strcmp(str, "y")||!strcmp(str, "T")||!strcmp(str, "t")||!strcmp(str, "TRUE")||!strcmp(str, "true")){
+		return TRUE;
+	}
+	return FALSE;
+}
+
+char str_to_char(const char *str){
+	return (char)str[0];
+}
