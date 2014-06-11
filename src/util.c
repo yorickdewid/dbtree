@@ -19,7 +19,7 @@ void strtolower(char *str){
 
 bool strtobool(char *str){
 	strtolower(str);
-	
+
 	if(!strcmp("true", str)||!strcmp("t", str)||!strcmp("y", str)||!strcmp("1", str)){
 		return TRUE;
 	}else{

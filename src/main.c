@@ -51,7 +51,7 @@ dbfile_t *create_db(FILE *fp){
 	proot->c_cnt = 0;
 	proot->k_cnt = 0;
 	proot->seq_cnt = SEQ_START;
-	
+
 	reset_vcount(proot);
 
 	return proot;
@@ -141,9 +141,8 @@ int main(int argc, char *argv[]){
 #if DEBUG
 	printf("[DEBUG MODE]\n");
 	printf("Compile: %s %s\n", __DATE__, __TIME__);
-	arch_info();
 #endif
-    
+
 	printf("Version: %d.%d.%d\n", VER_REL, VER_MAJOR, VER_MINOR);
 	printf("Database> ");
 	dbfile_t *mdb = open_dbfile(get_input(buffer, 32, TRUE));
@@ -195,7 +194,7 @@ int main(int argc, char *argv[]){
 			}else{
 				printf(">FALSCH\n");
 			}
-			
+
 		}
 		if(!strcmp("update", c)){
 			char tmp[32];
