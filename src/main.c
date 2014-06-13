@@ -19,7 +19,7 @@ void verify_db(dbfile_t *proot){
 	if(proot->head.magic != MAGIC){
 		close_dbfile(proot->vfp);
 		close_db(proot);
-		exit(0);
+		exit(1);
 	}
 }
 
@@ -27,12 +27,12 @@ dbfile_t *create_db(FILE *fp){
 	dbfile_t *proot = (dbfile_t*)malloc(sizeof(dbfile_t));
 	if(!proot){
 		printf("Out of memory\n");
-		exit(0);
+		exit(1);
 	}
 	proot->cnt = (dbcount_t*)malloc(sizeof(dbcount_t));
 	if(!proot->cnt){
 		printf("Out of memory\n");
-		exit(0);
+		exit(1);
 	}
 	proot->vfp = fp;
 	proot->head.tstamp = (int)time(NULL);
@@ -74,12 +74,12 @@ dbfile_t *open_db(FILE *fp){
 	dbfile_t *proot = (dbfile_t*)malloc(sizeof(dbfile_t));
 	if(!proot){
 		printf("Out of memory\n");
-		exit(0);
+		exit(1);
 	}
 	proot->cnt = (dbcount_t*)malloc(sizeof(dbcount_t));
 	if(!proot->cnt){
 		printf("Out of memory\n");
-		exit(0);
+		exit(1);
 	}
 
 	rewind(fp);
@@ -116,7 +116,7 @@ dbfile_t *open_dbfile(char *dbname){
 	if(stat(dbname, &dbstat) < 0){
 		fp = fopen(dbname, "w+b");
 		tree = create_db(fp);
-		printf("Create new database\n");
+		printf("Create database\n");
 	}else if(dbstat.st_size){
 		fp = fopen(dbname, "r+b");
 		tree = open_db(fp);
@@ -157,27 +157,28 @@ int main(int argc, char *argv[]){
 		}
 		if(!strcmp("help", c)){
 			printf("COMMANDS:\n");
-			printf("TRUNCATE      Delete all keys <DONE>\n");
-			printf("UPDATE        Update key value <DONE>\n");
-			printf("INSERT        Insert key <DONE>\n");
+			printf("TRUNCATE      Delete all keys\n");
+			printf("UPDATE        Update key value\n");
+			printf("INSERT        Insert key\n");
 			printf("DELETE \\\n");
-			printf("  COLUMN      Delete column <DONE>\n");
-			printf("  ROW         Delete row <DONE>\n");
+			printf("  COLUMN      Delete column\n");
+			printf("  ROW         Delete row\n");
 			printf("ALTER \\\n");
-			printf("  NAME        Change column name <DONE>\n");
-			printf("  LEFT        Shift column left <DONE>\n");
-			printf("  RIGHT       Shift column right <DONE>\n");
-			printf("SELECT        Select value from <DONE>\n");
+			printf("  NAME        Change column name\n");
+			printf("  LEFT        Shift column left\n");
+			printf("  RIGHT       Shift column right\n");
+			printf("SELECT        Select value from\n");
 			printf("ADD \\\n");
-			printf("  COLUMN      Add column <DONE>\n");
+			printf("  COLUMN      Add column\n");
 			printf("SHOW \\\n");
-			printf("  COLUMNS     Show all columns <DONE>\n");
-			printf("  TREE        Show storage tree <DONE>\n");
-			printf("  STATUS      Show database info <DONE>\n");
+			printf("  COLUMNS     Show all columns\n");
+			printf("  TREE        Show storage tree\n");
+			printf("  STATUS      Show database info\n");
 			printf("FREE \\\n");
-			printf("  COLUMNS     Columns freelist <DONE>\n");
-			printf("  NODE        Node freelist <DONE>\n");
-			printf("  DATAFIELDS  Payload freelist <DONE>\n");
+			printf("  COLUMNS     Columns freelist\n");
+			printf("  NODE        Node freelist\n");
+			printf("  DATAFIELDS  Payload freelist\n");
+			printf("EXIT          Quit the shell\n");
 		}
 		if(!strcmp("commit", c)){
 			commit_db(mdb);
