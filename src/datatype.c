@@ -16,7 +16,7 @@ DTYPE get_datatype_idx(char *name){
 			return i;
 		}
 	}
-	
+
 	return -1;
 }
 
@@ -38,7 +38,7 @@ const char *get_datatype_name(DTYPE type){
 			return mtx_datatype[i].name;
 		}
 	}
-	
+
 	return "UNKNOWN";
 }
 

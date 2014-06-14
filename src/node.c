@@ -58,7 +58,7 @@ STATUS truncate_root(dbfile_t *proot){
 	if(proot->k_cnt > 0 || proot->n_cnt > 0){
 		return NOTCOMPLETE;
 	}
-		
+
 	return SUCCESS;
 }
 
@@ -96,7 +96,7 @@ STATUS change(dbfile_t *proot, int key, void *value, int idx){
 		read_node(proot, ppos, &node);
 		pkey = node.key;
 		pcnt = node.cnt;
-		
+
 		i = get_key_position(key, pkey, pcnt);
 		if(i < pcnt && key == pkey[i]){
 			change_field(proot, ppos, i, value, idx);

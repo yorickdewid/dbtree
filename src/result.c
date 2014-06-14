@@ -95,7 +95,7 @@ static void print_table_row(dbfile_t *proot, FOSET n_child, int *cnt){
 void print_table(dbfile_t *proot){
 	int i;
 	int cnt = 0;
-	
+
 	printf(" #  !psid ");
 	print_table_column(proot, proot->data.c_root);
 
@@ -105,7 +105,7 @@ void print_table(dbfile_t *proot){
 		printf("----------");
 	}
 	printf("\n");
-	
+
 	print_table_row(proot, proot->data.n_root, &cnt);
 }
 

@@ -325,8 +325,6 @@ int main(int argc, char *argv[]){
 					printf("Unkown datatype\n");
 					continue;
 				}
-				printf("Enum idx %d\n", type);
-				printf("Enum name %s\n", get_datatype_name(type));
 				size = get_datatype(type).size;
 				if(size == EMPTY){
 					printf(">size: ");

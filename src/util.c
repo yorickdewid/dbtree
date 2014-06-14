@@ -43,11 +43,11 @@ char *get_lock(OPT lock){
 void set_option(char *flag, int opt) {
 	*flag |= opt;
 }
- 
+
 void unset_option(char *flag, int opt) {
     *flag &= ~opt;
 }
- 
+
 bool check_option(char *flag, int opt) {
     return *flag & opt;
 }

@@ -9,6 +9,7 @@ compile:
 	gcc $(CFLAGS) -c util.c
 	gcc $(CFLAGS) -c alloc.c
 	gcc $(CFLAGS) -c datatype.c
+	gcc $(CFLAGS) -c cast.c
 	gcc $(CFLAGS) -c column.c
 	gcc $(CFLAGS) -c node.c
 	gcc $(CFLAGS) -c field.c
@@ -20,6 +21,7 @@ compile-32:
 	gcc -m32 $(CFLAGS) -c util.c
 	gcc -m32 $(CFLAGS) -c alloc.c
 	gcc -m32 $(CFLAGS) -c datatype.c
+	gcc -m32 $(CFLAGS) -c cast.c
 	gcc -m32 $(CFLAGS) -c column.c
 	gcc -m32 $(CFLAGS) -c node.c
 	gcc -m32 $(CFLAGS) -c field.c

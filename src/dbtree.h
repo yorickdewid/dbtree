@@ -76,15 +76,12 @@ typedef enum {
 
 typedef enum {
 	_BOOL,
-//	_SMALLINT,
 	_INT,
-//	_FLOAT,
-//	_DOUBLE,
+	_FLOAT,
+	_DOUBLE,
 	_DECIMAL,
-//	_BLOB,
-	_CHAR
-//	_VARCHAR
-//	_TEXT
+	_CHAR,
+	_VARCHAR
 } DTYPE;
 
 typedef struct {
@@ -92,6 +89,7 @@ typedef struct {
 	DTYPE type;
 	int size;
 	bool signness;
+	bool varlen;
 } dtype_t;
 
 typedef struct {
@@ -101,71 +99,71 @@ typedef struct {
 } cast_t;
 
 typedef struct {
-	STATUS rstat;				/* Return status */
+	STATUS rstat;					/* Return status */
 	FOSET fpos;					/* Field position */
 	int idx;					/* Field index */
 } result_t;
 
 typedef struct {
-	char name[64];				/* Column name */
-	int maxsize;				/* Maximum size */
-	DTYPE d_type;				/* Data type */
+	char name[64];					/* Column name */
+	int maxsize;					/* Maximum size */
+	DTYPE d_type;					/* Data type */
 	bool usign;					/* Unsigned value */
-	FOSET c_next;				/* Next column offset */
+	FOSET c_next;					/* Next column offset */
 } column_t;
 
 typedef struct {
 	int d_size;					/* Datasize */
-	FOSET f_next;				/* Next field offset */
+	FOSET f_next;					/* Next field offset */
 } field_t;
 
 typedef struct {
 	int cnt;					/* Internal key counter */
-	int key[ND_DEGREE];			/* Key array */
-	FOSET f_val[ND_DEGREE];		/* Field offset array */
-	FOSET n_child[ND_POINTER];	/* Next node offset array */
+	int key[ND_DEGREE];				/* Key array */
+	FOSET f_val[ND_DEGREE];				/* Field offset array */
+	FOSET n_child[ND_POINTER];			/* Next node offset array */
 } node_t;
 
 typedef struct {
-	int cmt_vcnt;				/* Virtual commit count */
-	int c_rd_vcnt;				/* Virtual column read count */
-	int c_wr_vcnt;				/* Virtual column write count */
-	int n_rd_vcnt;				/* Virtual node read count */
-	int n_wr_vcnt;				/* Virtual node write count */
-	int f_rd_vcnt;				/* Virtual field read count */
-	int f_wr_vcnt;				/* Virtual field write count */
-	int d_rd_vcnt;				/* Virtual datafield read count */
-	int d_wr_vcnt;				/* Virtual datafield write count */
+	int cmt_vcnt;					/* Virtual commit count */
+	int c_rd_vcnt;					/* Virtual column read count */
+	int c_wr_vcnt;					/* Virtual column write count */
+	int n_rd_vcnt;					/* Virtual node read count */
+	int n_wr_vcnt;					/* Virtual node write count */
+	int f_rd_vcnt;					/* Virtual field read count */
+	int f_wr_vcnt;					/* Virtual field write count */
+	int d_rd_vcnt;					/* Virtual datafield read count */
+	int d_wr_vcnt;					/* Virtual datafield write count */
 } dbcount_t;
 
 typedef struct {
-	char version[7];			/* Unused */
+	char version[7];				/* Unused */
 	int tstamp;					/* Timestamp */
-	int release;				/* Version release */
-	char ver_maj;				/* Version major */
-	char ver_min;				/* Version minor */
-	char flag_opt;				/* Options flag */
+	int release;					/* Version release */
+	char ver_maj;					/* Version major */
+	char ver_min;					/* Version minor */
+	char flag_opt;					/* Options flag */
 	int magic;					/* Magic checksum */
 } dbheader_t;
 
 typedef struct {
 	FOSET c_pk;					/* Primary key column */
-	FOSET c_root;				/* Column root offset */
-	FOSET n_root;				/* Node root offset */
-	FOSET c_free;				/* Column freelist offset */
-	FOSET n_free;				/* Node freelist offset */
-	FOSET d_free;				/* Datafield freelist offset */
+	FOSET c_root;					/* Column root offset */
+	FOSET n_root;					/* Node root offset */
+	FOSET c_free;					/* Column freelist offset */
+	FOSET n_free;					/* Node freelist offset */
+	FOSET d_free;					/* Datafield freelist offset */
 } dboffset_t;
 
 typedef struct {
 	FILE *vfp;					/* Virutal file pointer */
-	dbheader_t head;			/* Database file header */
-	dbcount_t *cnt;				/* Virtual counter */
-	dboffset_t data;			/* Database offset data */
+	dbheader_t head;				/* Database file header */
+	dbcount_t *cnt;					/* Virtual counter */
+	dboffset_t data;				/* Database offset data */
 	int n_cnt;					/* Node count */
 	int c_cnt;					/* Column count */
 	int k_cnt;					/* Key count */
-	int seq_cnt;				/* Auto sequence counter */
+	int seq_cnt;					/* Auto sequence counter */
 } dbfile_t;
 
 void dbtree_printf(OPT mode, const char *file, int line, const char *format, ...);

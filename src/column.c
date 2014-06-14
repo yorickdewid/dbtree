@@ -40,12 +40,12 @@ void add_column(dbfile_t *proot, char *value, int size, DTYPE type, bool usign, 
 	if(get_column_idx(proot, value) != EMPTY){
 		return;
 	}
-	
+
 	strcpy(new_column.name, value);
 	new_column.maxsize = size;
 	new_column.d_type = type;
 	new_column.usign = usign;
-	
+
 	if(next == EMPTY){
 		new_column.c_next = next;
 		write_column(proot, ncol, &new_column);
@@ -79,7 +79,7 @@ void add_column(dbfile_t *proot, char *value, int size, DTYPE type, bool usign, 
 		}
 	}
 	add_field_all(proot, proot->data.n_root, idx);
-	
+
 	proot->c_cnt++;
 	commit_db(proot);
 }
@@ -130,7 +130,7 @@ void delete_column(dbfile_t *proot, int idx){
 			}else{
 				delete_field_all(proot, proot->data.n_root, idx);
 			}
-			
+
 			proot->c_cnt--;
 			commit_db(proot);
 		}
