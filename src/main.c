@@ -157,6 +157,8 @@ int main(int argc, char *argv[]){
 		}
 		if(!strcmp("help", c)){
 			printf("COMMANDS:\n");
+			printf("COMMIT        Commit file to disk\n");
+			printf("COUNT         Show row count\n");
 			printf("TRUNCATE      Delete all keys\n");
 			printf("UPDATE        Update key value\n");
 			printf("INSERT        Insert key\n");
@@ -174,6 +176,7 @@ int main(int argc, char *argv[]){
 			printf("  COLUMNS     Show all columns\n");
 			printf("  TREE        Show storage tree\n");
 			printf("  STATUS      Show database info\n");
+			printf("  TABLE       Show dataset as table\n");
 			printf("FREE \\\n");
 			printf("  COLUMNS     Columns freelist\n");
 			printf("  NODE        Node freelist\n");
@@ -183,19 +186,11 @@ int main(int argc, char *argv[]){
 		if(!strcmp("commit", c)){
 			commit_db(mdb);
 		}
+		if(!strcmp("count", c)){
+			printf("Total rows: %d\n", mdb->k_cnt);
+		}
 		if(!strcmp("truncate", c)){
 			truncate_root(mdb);
-		}
-		if(!strcmp("test", c)){
-			char tmp[32];
-			printf(">bool: ");
-			c = get_input(tmp, 32, FALSE);
-			if(strtobool(tmp)){
-				printf(">TRUEZ\n");
-			}else{
-				printf(">FALSCH\n");
-			}
-
 		}
 		if(!strcmp("update", c)){
 			char tmp[32];
