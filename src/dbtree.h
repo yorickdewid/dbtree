@@ -77,11 +77,11 @@ typedef enum {
 typedef enum {
 	_BOOL,
 	_INT,
-	_FLOAT,
-	_DOUBLE,
+//	_FLOAT,
+//	_DOUBLE,
 	_DECIMAL,
-	_CHAR,
-	_VARCHAR
+	_CHAR
+//	_VARCHAR
 } DTYPE;
 
 typedef struct {

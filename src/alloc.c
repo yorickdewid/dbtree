@@ -19,7 +19,6 @@ FOSET alloc_column(dbfile_t *proot){
 		proot->data.c_free = pcolumn.c_next;
 		commit_db(proot);
 	}
-
 	return ppos;
 }
 
@@ -39,11 +38,9 @@ FOSET alloc_node(dbfile_t *proot){
 		proot->data.n_free = pnode.n_child[0];
 		commit_db(proot);
 	}
-
 	return ppos;
 }
 
-//FOSET alloc_field(dbfile_t *proot, void *value){
 FOSET alloc_field(dbfile_t *proot, void *value, DTYPE type){
 	FOSET ppos, pdata, next, prev;
 	int size = strlen(value);
@@ -103,7 +100,6 @@ FOSET alloc_field(dbfile_t *proot, void *value, DTYPE type){
 		cast.value = value;
 		write_datafield(proot, pdata, cast);
 	}
-
 	return ppos;
 }
 
@@ -167,6 +163,5 @@ void free_field(dbfile_t *proot, FOSET ppos){
         	}
 		}
 	}
-
 	commit_db(proot);
 }

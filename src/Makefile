@@ -1,7 +1,7 @@
 CFLAGS = -Wall -g -DDEBUG -DVLAUNCH
 VFLAGS = --tool=memcheck --leak-check=yes --show-reachable=yes --num-callers=20 --track-fds=yes --track-origins=yes
-PROGRAM = dbtree.out
-PROGRAM32 = dbtree32.out
+PROGRAM = dbtree
+PROGRAM32 = dbtree32
 
 all: compile
 compile:

@@ -225,8 +225,11 @@ int main(int argc, char *argv[]){
 				}
 				column_t col;
 				read_column(mdb, mdb->data.c_root, &col);
-				printf(">%s<%s>: ", col.name, get_datatype_name(col.d_type));
+				printf(">%s<%s(%d)>: ", col.name, get_datatype_name(col.d_type), col.maxsize);
 				c = get_input(tmp, 32, FALSE);
+				if(get_datatype(col.d_type).size == -1){
+					tmp[col.maxsize] = '\0';
+				}
 				if(insert_key(mdb, key, (void*)tmp) == SUCCESS){
 					result_t rs = search_key(mdb, key);
 					if(rs.rstat == SUCCESS){
@@ -234,7 +237,7 @@ int main(int argc, char *argv[]){
 						int i = 1;
 						while(col.c_next != EMPTY){
 							read_column(mdb, col.c_next, &col);
-							printf(">%s<%s>: ", col.name, get_datatype_name(col.d_type));
+							printf(">%s<%s(%d)>: ", col.name, get_datatype_name(col.d_type), col.maxsize);
 							c = get_input(tmp, 32, FALSE);
 							add_field(mdb, rs.fpos, rs.idx, (void*)tmp, i);
 							i++;

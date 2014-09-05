@@ -52,15 +52,18 @@ void read_datafield(dbfile_t *proot, FOSET ppos, cast_t *pdata){
 		printf("<read INT>\n");
 	}else if(pdata->type == _CHAR){
 		char *tmp = malloc(pdata->size+1);
-		//char *tmp = malloc(5);
 		if(fread(tmp, pdata->size, 1, proot->vfp) == 0){
-		//if(fread(tmp, 4, 1, proot->vfp) == 0){
 			printf("Read failed\n");
 			return;
 		}
 		tmp[pdata->size] = '\0';
 		pdata->value = tmp;
 		printf("<read CHAR>\n");
+	}else{
+		// TODO
+		// Exit as soon as posible, data inconsistency
+		printf("ERROR: Data inconsistency\n Not a valid data type\n");
+		exit(1);
 	}
 	proot->cnt->d_rd_vcnt++;
 }
@@ -70,6 +73,11 @@ void write_datafield(dbfile_t *proot, FOSET ppos, cast_t pdata){
 		printf("Seek failed\n");
 		return;
 	}
+
+	dtype_t col_type = get_datatype(pdata.type);
+	if(col_type.size == -1)
+		printf(">>%ld", strlen(pdata.value));
+
 	if(pdata.type == _BOOL){
 		bool cast = strtobool(pdata.value);
 		if(fwrite(&cast, sizeof(bool), 1, proot->vfp) == 0){
@@ -86,11 +94,15 @@ void write_datafield(dbfile_t *proot, FOSET ppos, cast_t pdata){
 		printf("<write INT>\n");
 	}else if(pdata.type == _CHAR){
 		if(fwrite(pdata.value, pdata.size, 1, proot->vfp) == 0){
-		//if(fwrite("KAAS", 4, 1, proot->vfp) == 0){
 			printf("Write failed\n");
 			return;
 		}
 		printf("<write CHAR>\n");
+	}else{
+		// TODO
+		// Exit as soon as posible, data inconsistency
+		printf("ERROR: Data inconsistency\n Not a valid data type\n");
+		exit(1);
 	}
 	proot->cnt->d_wr_vcnt++;
 }
