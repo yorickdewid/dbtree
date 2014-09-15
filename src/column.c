@@ -30,7 +30,7 @@ void add_primary_key(dbfile_t *proot, int idx){
 }
 */
 
-// TODO: rename colname, add maxsize, add dtype
+//TODO: rename colname, add maxsize, add dtype
 void add_column(dbfile_t *proot, char *value, int size, DTYPE type, bool usign, int idx){
 	column_t new_column, prev_column;
 	FOSET prev, next = proot->data.c_root;
